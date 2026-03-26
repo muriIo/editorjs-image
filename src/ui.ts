@@ -198,9 +198,11 @@ export default class Ui {
      */
     const tag = /\.mp4$/.test(url) ? 'VIDEO' : 'IMG';
 
-    const attributes: { [key: string]: string | boolean } = {
-      src: url,
-    };
+    const attributes: { [key: string]: string | boolean } = {};
+
+    if (!this.config.lazyLoading) {
+      attributes.src = url;
+    }
 
     /**
      * We use eventName variable because IMG and VIDEO tags have different event to be called on source load
@@ -225,6 +227,34 @@ export default class Ui {
        * Change event to be listened
        */
       eventName = 'loadeddata';
+    } else {
+
+      /**
+       * Creates the lazy loading effect
+       */
+      if (tag === 'IMG' && this.config.lazyLoading) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+              const unobserve = () => observer.unobserve(this.nodes.wrapper);
+              const wrapper = entry.target;
+              const img = wrapper.querySelector<HTMLImageElement>(`.${this.CSS.imageEl}`);
+
+              if (!img) {
+                unobserve();
+
+                return;
+              }
+
+              img.src = url;
+              unobserve();
+            }
+          });
+        });
+
+        observer.observe(this.nodes.wrapper);
+      }
     }
 
     /**
