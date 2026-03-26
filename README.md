@@ -84,6 +84,7 @@ Image Tool supports these configuration parameters:
 | uploader | `{{uploadByFile: function, uploadByUrl: function}}` | Optional custom uploading methods. See details below. |
 | actions | `array` | Array with custom actions to show in the tool's settings menu. See details below. |
 | features | `object` | Allows you to enable/disable additional features such as border, background tunes and caption. See details below. |
+| lazyLoading | `boolean` | Enables lazy loading for images.When true, images are only fetched when they approach the viewport.
 
 Note that if you don't implement your custom uploader methods, the `endpoints` param is required.
 
@@ -288,6 +289,31 @@ var editor = EditorJS({
             })
           }
         }
+      }
+    }
+  }
+
+  ...
+});
+```
+## Lazy loading images
+For lazy loading images, you can leverage the `lazyLoading` config param. With this activated, the content of the image is loaded when the Wrapper of the image element intersects the viewport.
+
+```js
+import ImageTool from '@editorjs/image';
+
+var editor = EditorJS({
+  ...
+
+  tools: {
+    ...
+    image: {
+      class: ImageTool,
+      config: {
+        /**
+         * Lazy loading images flag
+         */
+        lazyLoading: true,
       }
     }
   }
