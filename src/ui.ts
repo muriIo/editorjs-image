@@ -271,6 +271,16 @@ export default class Ui {
       }
     });
 
+    /**
+     * If a lazy image fails to load, leave the preloader and show the empty state,
+     * so the image can be selected again (same as a failed non-lazy image)
+     */
+    if (attributes.loading === 'lazy') {
+      this.nodes.imageEl.addEventListener('error', () => {
+        this.toggleStatus(UiState.Empty);
+      });
+    }
+
     this.nodes.imageContainer.appendChild(this.nodes.imageEl);
   }
 

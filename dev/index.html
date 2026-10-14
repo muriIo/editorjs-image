@@ -46,6 +46,17 @@
               },
             },
             ...lazyBlocks,
+            {
+              type: "paragraph",
+              data: { text: "Broken image below: should fall back to the \"Select an Image\" button" },
+            },
+            {
+              type: "image",
+              data: {
+                file: { url: "https://example.invalid/broken.jpg" },
+                caption: "broken image",
+              },
+            },
           ],
         },
 
